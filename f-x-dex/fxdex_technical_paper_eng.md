@@ -5,7 +5,6 @@ DEX Modules
 
 ![](../.gitbook/drawable/dex-eng.png)
 
-
 ## 1.DEX Chain
 Dex Chain implements decentralized perpetual protocal:
 - Supports USDT/USDC/Dai 3 types of stable coin mrgin trades, supports Ethereum - DEX cross chain transaction
@@ -16,6 +15,7 @@ Dex Chain implements decentralized perpetual protocal:
 
 ## 2.Price Feed
 DEX chain retrieves price information from Band Protocol via IBC Replayer as perpetuals' index price. DEX chain allows validators to send price feed requests to the oracle. When a request is received, the DEX chain will post an request to band protocol on all open trade pairs via IBC Replayer
+
 ![oracle](../.gitbook/drawable/oracle_eng.png)
 
 ### 2.1 **Data Source**
@@ -36,7 +36,7 @@ DEX chain retrieves price information from Band Protocol via IBC Replayer as per
 + BTC
 + ETH
 + ...
-  
+
 **2) NYSE**
 
 + TSLA
@@ -85,28 +85,25 @@ Using Governance Voting (cosmos chain governance and cross-chain governance) to 
 #### 3.2.3 Trade pair information
 
 Each trade pair includes information below:
-```
-pair_id
-base_asset
-quote_asset
-price_precision
-position_precision
-```
 
-Authorized oracle is able to feed prices to multiple trade pairs. 
+- pair id
+- base asset denom
+- quote asset denom
+- price precision
+- position precision
+
+Authorized oracle is able to feed prices to multiple trade pairs.
 
 **Leverage(1-25x)**
 
-| Position Nominal Value		| Maximum Leverage	|Maintenance Margin Rate |				Maintance Margin	| Initial Margin Rate|
-| ---------------- | ------------------ | -------------------- | ---- | ---- |
-|500,000 - 1,500,000	|		25x		|		2.00%	|		5,365	|					4%|
-|1,500,000 - 4,000,000	|	10x		|		5.00%		|	50,365			|			10%|
-|4,000,000 - 10,000,000	|	5x		|		10.00%		|	250,365			|			20%|
-|10,000,000 - 20,000,000|		4x	|			12.50%	|		500,365		|				25%|
-|20,000,000 - 40,000,000|		3x	|			15.00%	|		1,000,365	|				33.3%|
-|40,000,000 - 150,000,000|	2x		|		25.00%		|	5,000,365		|			50%|
-|50,000,000 - max|	1x				|50.00%			|42,500,365				|	100%|
-
+| Tier|  	Position Bracket（Notional Value in USDT）	| 		Max Leverage 	| Maintenance Margin Rate			| 	Maintenance Amount (USDT)	| initial margin rate|
+| ---------------- | ------------------ | -------------------- | ---- | ---- | ----|
+| 1	|	0 - 5,000			|		25x		|		1.00%		|	0			|				4%
+| 2	|	5,000 - 25,000		|		20x		|		2.50%		|	75			|				5%
+| 3	|	25,000 - 100,000	|		10x		|		5.00%		|	700			|				10%
+| 4	|	100,000 - 250,000	|		5x		|		10.00%		|	5,700		|				20%
+| 5	|	250,000 - 1,000,000	|		2x		|		12.50%		|	11,950		|				50%
+| 6	|	1,000,000 - 30,000,000	|	1x		|		50.00%		|	386,950		|				100%
 
 ## 4.orders and Positions
 
@@ -121,11 +118,11 @@ In USD-Marginated Futures, the collateral is FXUSD, the base quantitiy of BTC is
 
 Spot price of BTC is 50000$. Alice has 10000 FXUSD, max buy 0.2 BTC spot，leverage level 10x，long 2 BTC
 
-Bob has 50000 FXUSD，max buy 1 BTC spot，leverage level 10x，short 1 BTC 
+Bob has 50000 FXUSD，max buy 1 BTC spot，leverage level 10x，short 1 BTC
 
 The market fills an order of 1 BTC at 50000$
 
-![](../.gitbook/drawable/dex-order-eng.png) 
+![](../.gitbook/drawable/dex-order-eng.png)
 
 ### 4.2 Aggregate Trading
 
@@ -145,9 +142,9 @@ Execution Price Selection Algorithm:
 - **Rule1:** max order quantity principle, when orders are filled at benchmark price, the maximum available order quantity can be obtained. If there are several levels of prices fulfilling the max quantity order principle, proceed to the next step
 - **Rule2:** minimum excessive order quantity principle, excessive order quantity is the difference between the accumulated bid orders and the accumulated ask orders. Minimum excessive order quantity principle means that the benchmark price should satisfies 2 conditions, a) the benchmark price should comply with Rule 1, b) the benchmark price level should have the minimum excessive order quantity in absolute magnitude.
 - **Rule3:** Bmarket pressure principle, in the case of several price levels fulfilling Rule 1 and Rule 2 (among these price levels, we identify the max price and the min price), the potential market pressure should be identified. When the excessive order quantities at all price levels are positive, there are more bid orders than ask orders. The market is in buyer pressure. When the excessive order quantities at all price levels are negative, there are more ask orders than bid orders -- the market is in seller pressure. If excessive order quantities have both positive and negative signs, there is no clear market pressure. Depending on the potential market pressure level, the following rules are to be considered to identify a reference price (ref). Once, the ref is identified, if the ref is in the range of [min price, max price] the ref will be taken as the benchmark price; if the ref is outside in the range of [min price, max price], the benchmark price is min price or max price whichever is closer to the ref price.
- - **Rule3a:** if excessive order quantities at all price levels are positive, the market is in buyer pressure, the ref price is 95% of the last price.
- - **Rule3b:** if excessive order quantities at all price levels are negative, the market is in seller pressure, the ref price is 105% of the last price.
- - **Rule3c:** if excessive order quantities at all price levels have both positive and negative signs, no clear market pressure, the ref price is the last price.
+- **Rule3a:** if excessive order quantities at all price levels are positive, the market is in buyer pressure, the ref price is 95% of the last price.
+- **Rule3b:** if excessive order quantities at all price levels are negative, the market is in seller pressure, the ref price is 105% of the last price.
+- **Rule3c:** if excessive order quantities at all price levels have both positive and negative signs, no clear market pressure, the ref price is the last price.
 
 
 ### 4.3 Orders
@@ -160,20 +157,18 @@ The amount of unfilled orders are restricted to 10000 per account per trade pair
 
 **Position Information**
 
-```
-Position（base asset）
-Margin（quote asset）
-Direction（long/short）
-leverage
-entry price
-liquidation price
-margin rate
-unrealized Profit & Loss
-```
+- position size（base asset）
+- margin（quote asset）
+- Direction（long/short）
+- leverage
+- entry price
+- liquidation price
+- margin rate
+- unrealized Profit & Loss
 
 **Add Margin**：add margin/margin rate
 
-**Decrese Margin**：Currently not supported
+**Reduce Margin**：Currently not supported
 
 **Close Position**：Close position by orders
 
@@ -187,8 +182,9 @@ Precise feed price is needed upon payments, then settle between Longs and Shorts
 
 ### 6.1 Funding Times
 
-UTC/ GMT -5:00
-- Standard Time:{03:05, 08:35, 15:05, 19:05}
+Time is EST
+- Standard Summer Time:03:05, 08:35, 15:05, 19:05
+- Standard Winter Time:04:05, 09:35, 16:05, 20:05
 - No Funding Rate on weekends, holidays
 - Four times during trading day
 
@@ -225,9 +221,9 @@ funding rate is equal to interest rate if (interest rate - avg premium index rat
 Funding periods are: 5.5 hrs, 6.5hrs and 8hrs.
 ```
 Since avg premium index and price index are not applicable in pre-market,the Pre-market funding rate is fixed to +/-0.01%. Settlement direction is determined by addresses' positions:
- - If Long > Short, long pays short
- - If Short > Long, short pays long
- - If Long = Short, no settlements will be made
+- If Long > Short, long pays short
+- If Short > Long, short pays long
+- If Long = Short, no settlements will be made
 
 ### 6.3 Funding Payments
 

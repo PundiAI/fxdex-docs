@@ -17,4 +17,3 @@ About the FunctionX Dex: The FunctionX Dex also known as a dex is the first Dex 
 * `ibc-go/modules`: Inter-blockchain communication. Hosted in the `cosmos/ibc-go` repository.
 * `x/params`: Handles app-level parameters.
 
-Next, learn how to [install f(x)Dex](installation.md).
