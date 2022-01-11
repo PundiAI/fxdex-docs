@@ -42,8 +42,8 @@ DEX chain retrieves price information from Band Protocol via IBC Replayer as per
 + TSLA
 + AAPL
 
-### 2.3 **Price Alogrithm**
-The index price of a trade pair is the median of mulitiple prices obtained from different data sources, including pre/during/post markets
+### 2.3 **Index Price**
+The index price of a trade pair is the median of mulitiple prices obtained from different data sources, including pre/during/post stock markets
 
 ### 2.4 **Price Update Frequency**
 Price update frequency is two times IBC cross-chain times needed, usually takes 15s, depending on Dex chain and Band Protocol chain block time.
@@ -74,15 +74,11 @@ A proposal will be deployed once it's approved.
 
 ### 3.2 Trade Pair
 
-#### 3.2.1 Create By Validator
+#### 3.2.1 Create By Governance Voting
 
-Current version of FxDex allows validators to create trade pairs.
+Using Governance Voting to initiate a proposal. After the proposal is approved, new trade pairs will take effect.
 
-#### 3.2.2 Create By Governance Voting
-
-Using Governance Voting (cosmos chain governance and cross-chain governance) to initiate a proposal. After the proposal is approved, new trade pairs will take effect.
-
-#### 3.2.3 Trade pair information
+#### 3.2.2 Trade pair information
 
 Each trade pair includes information below:
 
@@ -91,6 +87,8 @@ Each trade pair includes information below:
 - quote asset denom
 - price precision
 - position precision
+- max leverage
+- maintenance margin rate
 
 Authorized oracle is able to feed prices to multiple trade pairs.
 
@@ -174,17 +172,17 @@ The amount of unfilled orders are restricted to 10000 per account per trade pair
 
 ![](../.gitbook/drawable/dex-position-eng.png)
 
-
 ## 6.Funding Rate
+
 Funding rates are periodic payments either to traders that are long or short based on the difference between perpetual future prices and spot prices. When the funding rate is positive, Long pays Short. When the funding rate is negative, Short Pays Long.
 
 Precise feed price is needed upon payments, then settle between Longs and Shorts.
 
 ### 6.1 Funding Times
 
-Time is EST
-- Standard Summer Time:03:05, 08:35, 15:05, 19:05
-- Standard Winter Time:04:05, 09:35, 16:05, 20:05
+Time is Eastern Standard Time (EST, UTC-5)
+- Standard Summer Time: 03:05, 08:35, 15:05, 19:05
+- Standard Winter Time: 04:05, 09:35, 16:05, 20:05
 - No Funding Rate on weekends, holidays
 - Four times during trading day
 
