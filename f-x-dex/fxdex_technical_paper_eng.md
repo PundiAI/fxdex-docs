@@ -28,19 +28,12 @@ DEX chain retrieves price information from Band Protocol via IBC Replayer as per
 + COINBASEPRO
 + BRAVENEWCOIN
 
-**2) Stock**
-+ itiger stock market
+**2) Stock**: currently use itiger stock market(TIGR in NASDAQ) and IEXCLOUD
 
-### 2.2 **Source Supported Trade Pair**
-**1) Crypto**
-+ BTC
-+ ETH
-+ ...
+### 2.2 **Price Data Source Supported Trade Pair**
+**1) Crypto**: such as BTC, ETH, LTC, BNB  etc.
 
-**2) NYSE**
-
-+ TSLA
-+ AAPL
+**2) Stock**: almost all NYSE and NASDAQ stocks
 
 ### 2.3 **Index Price**
 The index price of a trade pair is the median of mulitiple prices obtained from different data sources, including pre/during/post stock markets
@@ -54,11 +47,11 @@ Governmence Module includes 4 stages: **Deposit stage, Voting stage, Counting st
 
 **1) Deposit stage**
 
-A minimum deposit of 512 Atom Token within two weeks is required to initiate a proposal. Any Atom Token holder can support a proposal by depositing the token.
+A minimum deposit of 10000 FX Token within two hours is required to initiate a proposal. Any FX Token holder can support a proposal by depositing the token.
 
 **2) Voting Stage**
 
-Validator will cast the vote on behalf of the delegators that delegated their vote ($FX) to that validator. Currently their are for options: "Approve", "Decline", "Veto" and "Abstain". The voting period lasts two weeks.
+Validator will cast the vote on behalf of the delegators that delegated their vote ($FX) to that validator. Currently options: "Approve", "Decline", "Veto" and "Abstain". The voting period lasts two hours.
 
 **3) Counting Stage**
 
@@ -92,16 +85,20 @@ Each trade pair includes information below:
 
 Authorized oracle is able to feed prices to multiple trade pairs.
 
-**Leverage(1-25x)**
+**Leverage(1-125x)**: max supported leverage is 125, max trading supported leverage is 25
 
-| Tier|  	Position Bracket（Notional Value in USDT）	| 		Max Leverage 	| Maintenance Margin Rate			| 	Maintenance Amount (USDT)	| initial margin rate|
+| Tier|  	Position Bracket(Notional Value in USDT)	| 		Max Leverage 	| Maintenance Margin Rate			| 	Maintenance Amount (USDT)	| initial margin rate|
 | ---------------- | ------------------ | -------------------- | ---- | ---- | ----|
-| 1	|	0 - 5,000			|		25x		|		1.00%		|	0			|				4%
-| 2	|	5,000 - 25,000		|		20x		|		2.50%		|	75			|				5%
-| 3	|	25,000 - 100,000	|		10x		|		5.00%		|	700			|				10%
-| 4	|	100,000 - 250,000	|		5x		|		10.00%		|	5,700		|				20%
-| 5	|	250,000 - 1,000,000	|		2x		|		12.50%		|	11,950		|				50%
-| 6	|	1,000,000 - 30,000,000	|	1x		|		50.00%		|	386,950		|				100%
+|1|		0 - 50,000	|				125x|			0.40%		|	0				|			0.008|
+|2|		50,000 - 250,000|			100x|			0.50%		|	50				|			0.001|
+|3|		250,000 - 1,000,000|			50x	|			1.00%	|		1,300		|				0.02|
+|4|		1,000,000 - 7,500,000|		20x	|			2.50%		|	16,300			|			0.05|
+|5|		7,500,000 - 40,000,000|		10x	|			5.00%		|	203,800			|			0.1|
+|6|		40,000,000 - 100,000,000|	5x	|			10.00%		|	2,203,800		|			0.2|
+|7|		100,000,000 - 200,000,000|	4x	|			12.50%		|	4,703,800		|			0.25|
+|8|		200,000,000 - 400,000,000|	3x	|			15.00%		|	9,703,800		|			0.33|
+|9|		400,000,000 - 600,000,000|	2x	|			25.00%		|	49,703,800		|			0.5|
+|10|		600,000,000 - 1,000,000,000|	1x	|			50.00%	|		199,703,800	|				1|
 
 ## 4.orders and Positions
 
@@ -110,13 +107,13 @@ Authorized oracle is able to feed prices to multiple trade pairs.
 Fxdex uses isolated margin mode,the margin placed into a position is isolated from the trader's account balance.
 Supports two direction positions.
 
-In USD-Marginated Futures, the collateral is FXUSD, the base quantitiy of BTC is recorded.
+In USD-Marginated Futures, the collateral is USDT, the base quantitiy of BTC is recorded.
 
-**Example: BTC/FXUSD Perpetuals**
+**Example: BTC/USDT Perpetuals**
 
-Spot price of BTC is 50000$. Alice has 10000 FXUSD, max buy 0.2 BTC spot，leverage level 10x，long 2 BTC
+Spot price of BTC is 50000$. Alice has 10000 USDT, max buy 0.2 BTC spot, leverage level 10x, long 2 BTC
 
-Bob has 50000 FXUSD，max buy 1 BTC spot，leverage level 10x，short 1 BTC
+Bob has 50000 USDT, max buy 1 BTC spot, leverage level 10x, short 1 BTC
 
 The market fills an order of 1 BTC at 50000$
 
@@ -155,20 +152,20 @@ The amount of unfilled orders are restricted to 10000 per account per trade pair
 
 **Position Information**
 
-- position size（base asset）
-- margin（quote asset）
-- Direction（long/short）
+- position size(base asset)
+- margin(quote asset)
+- Direction(long/short)
 - leverage
 - entry price
 - liquidation price
 - margin rate
 - unrealized Profit & Loss
 
-**Add Margin**：add margin/margin rate
+**Add Margin**: add margin/margin rate
 
-**Reduce Margin**：Currently not supported
+**Reduce Margin**: Currently not supported
 
-**Close Position**：Close position by orders
+**Close Position**: Close position by orders
 
 ![](../.gitbook/drawable/dex-position-eng.png)
 
@@ -253,5 +250,5 @@ When margin rate falls under maintenance margin rate, user's position will be li
 ## 9 Conclusion
 As a decentralized exchange, DEX chain is estricted by 1s block time. Orders are restricted by mempool (regardless of order type). The maximum number of orders can be processed is 2000. After mempool is full, the node will stop receving new order requests until fully processed current orders, otherwise it will affect block time.
 
-On DEX chain, the total amount of orders is not restricted. Meantime each block is set to process 1000 orders. By aggregating, orders will be sort by: 1. price， 2. order created time. When the number of executable orders exceeds 1000, exceeded orders will be processed by next block. During this time, current trade pair and new orders will be locked until current orders are processed. Other types of orders are not restricted.
+On DEX chain, the total amount of orders is not restricted. Meantime each block is set to process 1000 orders. By aggregating, orders will be sort by: 1. price, 2. order created time. When the number of executable orders exceeds 1000, exceeded orders will be processed by next block. During this time, current trade pair and new orders will be locked until current orders are processed. Other types of orders are not restricted.
 
