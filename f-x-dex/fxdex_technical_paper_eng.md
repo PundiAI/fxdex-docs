@@ -41,7 +41,7 @@ The index price of a trade pair is the median of mulitiple prices obtained from 
 ### 2.4 **Price Update Frequency**
 Price update frequency is two times IBC cross-chain times needed, usually takes 15s, depending on Dex chain and Band Protocol chain block time.
 
-## 3.Governance Module
+## 3.Governance Module (Disabled for Alpha Test)
 
 Governmence Module includes 4 stages: **Deposit stage, Voting stage, Counting stage and Deploying stage**
 
@@ -71,13 +71,13 @@ A proposal will be deployed once it's approved.
 
 Using Governance Voting to initiate a proposal. After the proposal is approved, new trade pairs will take effect.
 
-#### 3.2.2 Trade pair information
+#### 3.2.2 Trade Pair Information
 
 Each trade pair includes information below:
 
 - pair id
-- base asset denom
-- quote asset denom
+- base asset denominator
+- quote asset denominator
 - price precision
 - position precision
 - max leverage
@@ -85,7 +85,7 @@ Each trade pair includes information below:
 
 Authorized oracle is able to feed prices to multiple trade pairs.
 
-**Leverage(1-125x)**: max supported leverage is 125, max trading supported leverage is 25
+**Leverage(1-125x)**: max supported leverage level is 125, max trading supported leverage is 25
 
 | Tier|  	Position Bracket(Notional Value in USDT)	| 		Max Leverage 	| Maintenance Margin Rate			| 	Maintenance Amount (USDT)	| initial margin rate|
 | ---------------- | ------------------ | -------------------- | ---- | ---- | ----|
@@ -100,14 +100,14 @@ Authorized oracle is able to feed prices to multiple trade pairs.
 |9|		400,000,000 - 600,000,000|	2x	|			25.00%		|	49,703,800		|			0.5|
 |10|		600,000,000 - 1,000,000,000|	1x	|			50.00%	|		199,703,800	|				1|
 
-## 4.orders and Positions
+## 4.Orders and Positions
 
 ### 4.1 Open Position(Long/Short)
 
 Fxdex uses isolated margin mode,the margin placed into a position is isolated from the trader's account balance.
 Supports two direction positions.
 
-In USD-Marginated Futures, the collateral is USDT, the base quantitiy of BTC is recorded.
+In USD-Marginated Futures, the collateral is USDT, the base quantitiy of the quote asset is recorded.
 
 **Example: BTC/USDT Perpetuals**
 
@@ -248,7 +248,7 @@ When margin rate falls under maintenance margin rate, user's position will be li
 - USDT/USDC/Dai/FX -> FxCore -> Dex
 
 ## 9 Conclusion
-As a decentralized exchange, DEX chain is estricted by 1s block time. Orders are restricted by mempool (regardless of order type). The maximum number of orders can be processed is 2000. After mempool is full, the node will stop receving new order requests until fully processed current orders, otherwise it will affect block time.
+As a decentralized exchange, DEX chain is restricted by 1s block time. Orders are restricted by mempool (regardless of order type). The maximum number of orders can be processed is 2000. After mempool is full, the node will stop receving new order requests until fully processed current orders, otherwise it will affect block time.
 
 On DEX chain, the total amount of orders is not restricted. Meantime each block is set to process 1000 orders. By aggregating, orders will be sort by: 1. price, 2. order created time. When the number of executable orders exceeds 1000, exceeded orders will be processed by next block. During this time, current trade pair and new orders will be locked until current orders are processed. Other types of orders are not restricted.
 
