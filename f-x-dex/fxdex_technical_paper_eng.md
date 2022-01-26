@@ -175,6 +175,9 @@ Funding rates are periodic payments either to traders that are long or short bas
 
 Precise feed price is needed upon payments, then settle between Longs and Shorts.
 
+### Restriction: Funding rate's lower and upper limit is set to be (-0.75%, +0.75%)
+
+
 ### 6.1 Funding Times
 
 Time is Eastern Standard Time (EST, UTC-5)
